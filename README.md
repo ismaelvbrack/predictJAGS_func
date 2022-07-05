@@ -9,6 +9,7 @@ It was built to predict "regression-type" and "ANCOVA-type" relationships, so fa
   - newdata = data.frame with covariate values to predict
   - link = link functions for the response allowed: "identity", "log" and "logit"
   - appendData = logical. Include covariates values in the output?
+
 \.
 See the example with Swiss Jays from the AHM1 book
 
