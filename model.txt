@@ -1,0 +1,29 @@
+
+model {
+  # Prior distributions
+  p0 ~ dunif(0,1)
+  alpha0 <- log(p0 / (1-p0))
+  alpha1 ~ dnorm(0, 0.01)
+  beta0 ~ dnorm(0,0.01)
+  beta1 ~ dnorm(0,0.01)
+  beta2 ~ dnorm(0,0.01)
+  beta3 ~ dnorm(0,0.01)
+  psi <- sum(lambda[]) / M   # psi is a derived parameter
+  # Model for abundance: lambda depends on Elev, Length, Forest
+  for(s in 1:nsites){
+    log(lambda[s]) <- beta0 + beta1 * X[s,1] + beta2*X[s,4] + beta3*X[s,3] # modified from the original code to use iLength
+    probs[s] <- lambda[s] / sum(lambda[])
+  }
+  # Model for individual encounter histories
+  for(i in 1:M){
+    group[i] ~ dcat(probs[])  # Group == site membership
+    z[i] ~ dbern(psi)         # Data augmentation variables
+    # Observation model: p depends on Intensity
+    for(j in 1:J){
+      logit(p[i,j]) <- alpha0 + alpha1 * Intensity[group[i],j]
+      pz[i,j] <- p[i,j] * z[i]
+      y[i,j] ~ dbern(pz[i,j])
+    }
+  }
+}
+
