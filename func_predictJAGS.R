@@ -13,7 +13,7 @@
 
 predictJAGS <- function(fm, params, newdata, quants=c(0.025,0.5,0.975),link="identity",appendData=TRUE){
 
-  if(is(out1) != "jagsUI"){
+  if(is(fm) != "jagsUI"){
     stop("fm is not a 'jagsUI' object")
   }
   if(is.null(fm$sims.list)){
@@ -41,7 +41,7 @@ predictJAGS <- function(fm, params, newdata, quants=c(0.025,0.5,0.975),link="ide
   
   # predict...
   for(i in 1:nrow(pars.post)){ # each line correspond to a covariate value
-    fit.post[,i] <- newdata.m %*% pars.post[i,] # each column correpond to sample of the 
+    fit.post[,i] <- newdata.m %*% pars.post[i,] # each column corresponds to sample of the 
   }                                               # posteriors distributions (MCMC values)
   
   if(link=="log"){
